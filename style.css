@@ -182,11 +182,12 @@ main {
   place-items: center;
 }
 .camera-shell video {
-  transform: none !important;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
+    transform: scaleX(-1) !important;
+    -webkit-transform: scaleX(-1) !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
 }
 .camera-shell video.ready {
   display: block;
