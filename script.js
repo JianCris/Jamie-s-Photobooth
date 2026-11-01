@@ -130,8 +130,7 @@
     );
   async function enableCamera() {
     if (!navigator.mediaDevices?.getUserMedia) {
-      video.style.transform =
-        state.facing === "user" ? "scaleX(-1)" : "scaleX(1)";
+      video.style.transform = "scaleX(1)";
       alert(
         "Camera access is not available. Open this app using HTTPS or localhost in a supported browser.",
       );
@@ -233,8 +232,6 @@
     c.height = video.videoHeight || 960;
 
     const ctx = c.getContext("2d");
-    ctx.translate(c.width, 0);
-    ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, c.width, c.height);
 
     $("flash").classList.remove("on");
