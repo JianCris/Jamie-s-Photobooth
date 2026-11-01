@@ -164,8 +164,14 @@
 
       video.srcObject = state.stream;
 
-      video.style.setProperty("transform", "scaleX(-1)", "important");
-      video.style.setProperty("-webkit-transform", "scaleX(-1)", "important");
+      const mirror = state.facing === "user" ? -1 : 1;
+
+      video.style.setProperty("transform", `scaleX(${mirror})`, "important");
+      video.style.setProperty(
+        "-webkit-transform",
+        `scaleX(${mirror})`,
+        "important",
+      );
 
       await video.play();
 
