@@ -177,18 +177,19 @@ main {
   background: #282522;
   border-radius: 15px;
   overflow: hidden;
-  aspect-ratio: 3/4;
+  width: 100%;
+  aspect-ratio: 3 / 4; /* Temporary fallback */
   display: grid;
   place-items: center;
 }
 
 .camera-shell video {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  object-fit: contain;
+  object-position: center;
 }
-
 .camera-shell video.ready {
   display: block;
 }
