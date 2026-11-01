@@ -166,6 +166,8 @@
       video.style.transform = "none";
 
       await video.play();
+      video.style.transform =
+        state.facing === "user" ? "scaleX(-1)" : "scaleX(1)";
 
       video.classList.add("ready");
       $("cameraPlaceholder").classList.add("hidden");
