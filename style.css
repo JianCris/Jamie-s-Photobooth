@@ -182,6 +182,7 @@ main {
   place-items: center;
 }
 .camera-shell video {
+  transform: scaleX(-1);
   width: 100%;
   height: 100%;
   object-fit: cover;
