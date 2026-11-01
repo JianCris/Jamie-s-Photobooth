@@ -163,7 +163,8 @@
       }
 
       video.srcObject = state.stream;
-      video.style.transform = "none";
+      video.style.setProperty("transform", "scaleX(1)", "important");
+      video.style.setProperty("-webkit-transform", "scaleX(1)", "important");
 
       await video.play();
 
@@ -250,11 +251,6 @@
 
     const ctx = c.getContext("2d");
     ctx.save();
-
-    if (state.facing === "user") {
-      ctx.translate(c.width, 0);
-      ctx.scale(-1, 1);
-    }
 
     ctx.drawImage(video, 0, 0, c.width, c.height);
 
