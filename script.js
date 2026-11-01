@@ -187,14 +187,6 @@
     await enableCamera();
   };
 
-  startCamera.onclick = enableCamera;
-
-  $("switchCamera").onclick = async () => {
-    state.facing = state.facing === "user" ? "environment" : "user";
-
-    await enableCamera();
-  };
-
   function beep(freq = 660, duration = 0.12) {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
