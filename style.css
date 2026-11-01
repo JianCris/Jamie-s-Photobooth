@@ -181,15 +181,18 @@ main {
   display: grid;
   place-items: center;
 }
+
 .camera-shell video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
+
 .camera-shell video.ready {
   display: block;
 }
+
 .camera-placeholder {
   color: #d7cec3;
   text-align: center;
