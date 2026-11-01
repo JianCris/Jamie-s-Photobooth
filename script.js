@@ -153,7 +153,6 @@
           audio: false,
         });
       } catch (error) {
-        // Fallback for browsers that don't support exact facingMode
         state.stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: state.facing,
@@ -162,11 +161,14 @@
         });
       }
 
+      // Attach the new camera stream
       video.srcObject = state.stream;
 
+      // Mirror front camera only; keep back camera normal
       const mirror = state.facing === "user" ? -1 : 1;
 
       video.style.setProperty("transform", `scaleX(${mirror})`, "important");
+
       video.style.setProperty(
         "-webkit-transform",
         `scaleX(${mirror})`,
