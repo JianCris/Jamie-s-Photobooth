@@ -254,7 +254,16 @@
     c.height = video.videoHeight || 960;
 
     const ctx = c.getContext("2d");
+    ctx.save();
+
+    if (state.facing === "user") {
+      ctx.translate(c.width, 0);
+      ctx.scale(-1, 1);
+    }
+
     ctx.drawImage(video, 0, 0, c.width, c.height);
+
+    ctx.restore();
 
     $("flash").classList.remove("on");
     void $("flash").offsetWidth;
