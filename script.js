@@ -163,6 +163,14 @@
 
       // Attach the new camera stream
       video.srcObject = state.stream;
+      await new Promise(resolve => {
+        video.onloadedmetadata = resolve;
+      });
+
+const width = video.videoWidth;
+const height = video.videoHeight;
+
+$("cameraShell").style.aspectRatio = `${width} / ${height}`;
 
       // Mirror front camera only; keep back camera normal
       const mirror = state.facing === "user" ? -1 : 1;
