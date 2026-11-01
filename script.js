@@ -128,39 +128,64 @@
     .forEach((b) =>
       b.addEventListener("click", () => chooseLayout(b.dataset.layout)),
     );
+
   async function enableCamera() {
     if (!navigator.mediaDevices?.getUserMedia) {
-      alert(
-        "Camera access is not available. Open this app using HTTPS or localhost in a supported browser.",
-      );
+      alert("Camera access is not available. Use HTTPS or localhost.");
       return;
     }
+
     try {
-      if (state.stream) state.stream.getTracks().forEach((t) => t.stop());
-      state.stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: state.facing,
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
-        },
-        audio: false,
-      });
+      // Stop the previous camera
+      if (state.stream) {
+        state.stream.getTracks().forEach((track) => track.stop());
+        state.stream = null;
+      }
+
+      // Request the selected camera
+      try {
+        state.stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { exact: state.facing },
+            width: { ideal: 1080 },
+            height: { ideal: 1920 },
+          },
+          audio: false,
+        });
+      } catch (error) {
+        // Fallback for browsers that don't support exact facingMode
+        state.stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: state.facing,
+          },
+          audio: false,
+        });
+      }
+
       video.srcObject = state.stream;
-      video.style.transform = "scaleX(1)";
+      video.style.transform = "none";
+
       await video.play();
+
       video.classList.add("ready");
       $("cameraPlaceholder").classList.add("hidden");
       $("cameraState").textContent = "CAMERA LIVE";
       startCamera.textContent = "Camera ready";
+
       captureBtn.disabled = false;
       $("switchCamera").disabled = false;
     } catch (err) {
-      alert(
-        "Couldn't access the camera. Please allow camera permission and check that no other app is using it.\n\n"
-          + err.message,
-      );
+      alert("Couldn't access the camera. " + err.message);
     }
   }
+
+  startCamera.onclick = enableCamera;
+
+  $("switchCamera").onclick = async () => {
+    state.facing = state.facing === "user" ? "environment" : "user";
+
+    await enableCamera();
+  };
   startCamera.onclick = enableCamera;
   $("switchCamera").onclick = async () => {
     state.facing = state.facing === "user" ? "environment" : "user";
