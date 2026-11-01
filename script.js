@@ -130,7 +130,6 @@
     );
   async function enableCamera() {
     if (!navigator.mediaDevices?.getUserMedia) {
-      video.style.transform = "scaleX(1)";
       alert(
         "Camera access is not available. Open this app using HTTPS or localhost in a supported browser.",
       );
@@ -147,6 +146,7 @@
         audio: false,
       });
       video.srcObject = state.stream;
+      video.style.transform = "scaleX(1)";
       await video.play();
       video.classList.add("ready");
       $("cameraPlaceholder").classList.add("hidden");
@@ -166,9 +166,6 @@
     state.facing = state.facing === "user" ? "environment" : "user";
 
     await enableCamera();
-
-    video.style.transform =
-      state.facing === "user" ? "scaleX(-1)" : "scaleX(1)";
   };
   function beep(freq = 660, duration = 0.12) {
     try {
