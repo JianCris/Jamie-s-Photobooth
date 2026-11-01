@@ -163,8 +163,9 @@
       }
 
       video.srcObject = state.stream;
-      video.style.setProperty("transform", "scaleX(1)", "important");
-      video.style.setProperty("-webkit-transform", "scaleX(1)", "important");
+
+      video.style.setProperty("transform", "scaleX(-1)", "important");
+      video.style.setProperty("-webkit-transform", "scaleX(-1)", "important");
 
       await video.play();
 
