@@ -3,185 +3,533 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f8f3ed" />
-    <title>Snap Studio — Virtual Photobooth</title>
+    <title>Jamie's PhotoBooth — Virtual Photobooth</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-
-  <body>
-    <header class="topbar">
-      <div class="brand">
+  <body class="min-h-screen flex flex-col font-sans bg-bg text-ink">
+    <!-- Header Navigation -->
+    <header
+      class="header border-b sticky top-0 z-50 px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" id="brand-logo">
         <div class="brandmark">:D</div>
-        <div>Jamie's studio<small>your little photo moment</small></div>
+        <span class="text-2xl font-serif font-bold tracking-wide text-accent"
+          >Jamie's PhotoBooth</span
+        >
+        <span
+          class="text-xs px-2.5 py-1 rounded-full badge-soft font-medium hidden sm:inline-block"
+          >Virtual Photobooth</span
+        >
       </div>
-      <div class="topnote">A tiny booth, a big memory.</div>
+
+      <!-- Step Progress Indicator -->
+      <nav
+        id="step-nav"
+        class="hidden items-center space-x-1.5 sm:space-x-2 text-xs font-medium muted-text">
+        <span
+          id="nav-step-1"
+          class="px-2 sm:px-2.5 py-1 rounded-full bg-soft text-accent-dark"
+          >1. Layout</span
+        >
+        <span>&rarr;</span>
+        <span id="nav-step-2" class="px-2 sm:px-2.5 py-1 rounded-full"
+          >2. Camera</span
+        >
+        <span>&rarr;</span>
+        <span id="nav-step-3" class="px-2 sm:px-2.5 py-1 rounded-full"
+          >3. Design</span
+        >
+      </nav>
+
+      <div class="text-xs sm:text-sm muted-text hidden md:block">
+        A little moment, made yours.
+      </div>
     </header>
-    <main>
-      <div class="intro">
-        <div class="eyebrow">The virtual photobooth</div>
-        <h1>Make a moment worth keeping.</h1>
-        <p>
-          Pick your frame, strike a pose, and take home a little strip of joy.
-        </p>
-      </div>
-      
-      <div class="workspace">
-        <section class="panel">
-          <div class="panelhead">
-            <h2 id="mainTitle">Your camera booth</h2>
-            <span id="stepLabel">STEP 01 / 04</span>
-          </div>
-          <div class="camera-area section active" id="captureSection">
-            <div class="camera-shell" id="cameraShell">
-              <video id="video" autoplay playsinline muted></video>
-              <div class="camera-placeholder" id="cameraPlaceholder">
-                <div class="cam-icon">▣</div>
-                <strong>Your camera moment starts here</strong>
-                <p>Allow camera access to see your live preview.</p>
-              </div>
-              <div class="camera-badge">
-                <i class="live-dot"></i><span id="cameraState">CAMERA OFF</span>
-              </div>
-              <div class="countdown" id="countdown">3</div>
-              <div class="flash" id="flash"></div>
-            </div>
-            <div class="camera-controls">
-              <button class="primary" id="startCamera">Enable camera</button>
-              <button class="secondary" id="captureBtn" disabled>
-                Take photo <span>↗</span>
-              </button>
-              <button
-                class="quiet"
-                id="switchCamera"
-                title="Switch camera"
-                disabled>
-                ↻ Flip
-              </button>
-            </div>
-            <p class="hint" id="captureHint">
-              Choose a layout on the right, then enable your camera. Each shot
-              has a three-second countdown.
-            </p>
-            <div class="step-actions">
-              <button class="quiet" id="backToLayout">← Layout</button
-              ><button class="primary" id="toCustomize" disabled>
-                Continue to customize →
-              </button>
-            </div>
-          </div>
-          <div class="camera-area section" id="customSection">
-            <div class="custom-row">
-              <label class="label">Choose your frame mood</label>
-              <div class="swatches" id="swatches"></div>
-            </div>
-            <div class="custom-row">
-              <label class="label" for="caption">Your strip caption</label
-              ><input
-                class="text-input"
-                id="caption"
-                maxlength="42"
-                placeholder="e.g. Summer memories · 2026" />
-            </div>
-            <label class="checkline"
-              ><input type="checkbox" id="dateStamp" checked /> Add today's date
-              to the strip</label
+
+    <!-- Main Dynamic Screen Container -->
+    <main
+      class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8 flex flex-col justify-center">
+      <!-- ==================== SCREEN 1: INTRO ==================== -->
+      <section
+        id="screen-intro"
+        class="screen-view text-center space-y-8 max-w-3xl mx-auto py-6 sm:py-8">
+        <div class="space-y-4">
+          <span
+            class="text-xs uppercase tracking-widest px-3 py-1 rounded-full badge-soft font-semibold"
+            >Vintage Charm meets Modern Design</span
+          >
+          <h1
+            class="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-ink leading-tight">
+            Your Moments, <br /><span class="text-accent italic font-normal"
+              >Your Strip.</span
             >
-            <div class="step-actions">
-              <button class="quiet" id="backToCapture">← Retake photos</button
-              ><button class="primary" id="toPreview">
-                Preview your strip →
+          </h1>
+          <p
+            class="text-base sm:text-lg muted-text max-w-xl mx-auto font-normal">
+            Capture candid memories, personalize custom borders, and download
+            elegant photo strips right from your browser.
+          </p>
+        </div>
+
+        <!-- Decorative Sample Photo Strips -->
+        <div
+          class="flex justify-center items-center space-x-4 sm:space-x-6 py-4 overflow-hidden">
+          <div
+            class="card-bg p-3 rounded-lg shadow-custom transform -rotate-6 w-28 sm:w-36 space-y-2 border border-line">
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="text-[9px] text-center font-mono muted-text pt-1">
+              09 · 24 · FOREVER
+            </div>
+          </div>
+          <div
+            class="card-bg p-3 rounded-lg shadow-custom transform rotate-3 z-10 w-32 sm:w-40 space-y-2 border border-line">
+            <div
+              class="w-full aspect-[4/3] bg-soft rounded flex items-center justify-center text-accent text-xs">
+              📸
+            </div>
+            <div
+              class="w-full aspect-[4/3] bg-soft rounded flex items-center justify-center text-accent text-xs">
+              ✨
+            </div>
+            <div
+              class="w-full aspect-[4/3] bg-soft rounded flex items-center justify-center text-accent text-xs">
+              🤍
+            </div>
+            <div class="text-[9px] text-center font-mono accent-dark-text pt-1">
+              KEEPSAKE
+            </div>
+          </div>
+          <div
+            class="card-bg p-3 rounded-lg shadow-custom transform rotate-6 w-28 sm:w-36 space-y-2 border border-line">
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="w-full aspect-[4/3] bg-line/60 rounded"></div>
+            <div class="text-[9px] text-center font-mono muted-text pt-1">
+              MEMORIES
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="btn-start-photobooth"
+            class="btn-primary text-white font-medium text-lg px-8 py-4 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 cursor-pointer">
+            Start Photobooth
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== SCREEN 2: STRIP LAYOUT ==================== -->
+      <section
+        id="screen-layout"
+        class="screen-view hidden space-y-8 max-w-5xl mx-auto w-full">
+        <div class="text-center space-y-2">
+          <h2 class="text-3xl font-serif font-bold text-ink">
+            Choose Your Strip
+          </h2>
+          <p class="text-sm muted-text">
+            Pick a layout for your photobooth session.
+          </p>
+        </div>
+
+        <!-- Visual Cards Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Layout 1: 1x3 Vertical -->
+          <div
+            data-layout="1x3"
+            class="layout-card bg-paper rounded-3xl p-5 border border-line hover:border-accent transition cursor-pointer flex flex-col justify-between space-y-6 shadow-custom group relative">
+            <div
+              class="bg-bg/80 rounded-2xl p-6 flex flex-col items-center justify-center relative min-h-[220px]">
+              <div
+                class="radio-indicator absolute top-4 right-4 w-6 h-6 rounded-full border-2 border-line bg-paper flex items-center justify-center transition"></div>
+              <!-- Mini Photostrip Frame Mockup -->
+              <div
+                class="bg-paper p-3 rounded-lg shadow-md w-24 space-y-2 border border-line/60 group-hover:scale-105 transition transform">
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div
+                  class="w-6 h-0.5 bg-accent/60 mx-auto rounded-full mt-1"></div>
+              </div>
+            </div>
+            <div class="px-2">
+              <h3
+                class="text-xl font-serif font-bold text-ink group-hover:text-accent">
+                1 × 3 Vertical
+              </h3>
+              <p
+                class="text-xs font-semibold uppercase tracking-wider muted-text">
+                3 PHOTOS
+              </p>
+            </div>
+          </div>
+
+          <!-- Layout 2: 2x2 Grid -->
+          <div
+            data-layout="2x2"
+            class="layout-card bg-paper rounded-3xl p-5 border border-line hover:border-accent transition cursor-pointer flex flex-col justify-between space-y-6 shadow-custom group relative">
+            <div
+              class="bg-bg/80 rounded-2xl p-6 flex flex-col items-center justify-center relative min-h-[220px]">
+              <div
+                class="radio-indicator absolute top-4 right-4 w-6 h-6 rounded-full border-2 border-line bg-paper flex items-center justify-center transition"></div>
+              <!-- Mini Photostrip Frame Mockup -->
+              <div
+                class="bg-paper p-3 rounded-lg shadow-md w-32 grid grid-cols-2 gap-1.5 border border-line/60 group-hover:scale-105 transition transform">
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div
+                  class="col-span-2 w-6 h-0.5 bg-accent/60 mx-auto rounded-full mt-0.5"></div>
+              </div>
+            </div>
+            <div class="px-2">
+              <h3
+                class="text-xl font-serif font-bold text-ink group-hover:text-accent">
+                2 × 2 Grid
+              </h3>
+              <p
+                class="text-xs font-semibold uppercase tracking-wider muted-text">
+                4 PHOTOS
+              </p>
+            </div>
+          </div>
+
+          <!-- Layout 3: 1x4 Classic -->
+          <div
+            data-layout="1x4"
+            class="layout-card bg-paper rounded-3xl p-5 border border-line hover:border-accent transition cursor-pointer flex flex-col justify-between space-y-6 shadow-custom group relative">
+            <div
+              class="bg-bg/80 rounded-2xl p-6 flex flex-col items-center justify-center relative min-h-[220px]">
+              <div
+                class="radio-indicator absolute top-4 right-4 w-6 h-6 rounded-full border-2 border-line bg-paper flex items-center justify-center transition"></div>
+              <!-- Mini Photostrip Frame Mockup -->
+              <div
+                class="bg-paper p-2.5 rounded-lg shadow-md w-22 space-y-1.5 border border-line/60 group-hover:scale-105 transition transform">
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div class="w-full aspect-square bg-stone-300 rounded-sm"></div>
+                <div
+                  class="w-6 h-0.5 bg-accent/60 mx-auto rounded-full mt-1"></div>
+              </div>
+            </div>
+            <div class="px-2">
+              <h3
+                class="text-xl font-serif font-bold text-ink group-hover:text-accent">
+                1 × 4 Classic
+              </h3>
+              <p
+                class="text-xs font-semibold uppercase tracking-wider muted-text">
+                4 PHOTOS
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4">
+          <button
+            id="btn-back-to-intro"
+            class="btn-secondary font-medium px-6 py-2.5 rounded-xl cursor-pointer">
+            &larr; Back
+          </button>
+          <button
+            id="btn-to-camera"
+            disabled
+            class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium px-8 py-2.5 rounded-xl transition cursor-pointer">
+            Continue &rarr;
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== SCREEN 3: TAKING PHOTO ==================== -->
+      <section
+        id="screen-camera"
+        class="screen-view hidden space-y-6 max-w-5xl mx-auto w-full">
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div
+            class="flex items-center justify-between w-full sm:w-auto space-x-4">
+            <div>
+              <h2 class="text-3xl font-serif font-bold text-ink">
+                Your photos
+              </h2>
+              <p id="photo-progress-text" class="text-sm muted-text">
+                0 of 3 captured
+              </p>
+            </div>
+          </div>
+
+          <!-- SEPARATE "RETAKE ALL" BUTTON AT STEP LEVEL -->
+          <div id="global-retake-container" class="hidden">
+            <button
+              id="btn-retake-all"
+              class="btn-secondary text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl flex items-center space-x-1.5 cursor-pointer shadow-xs">
+              <span>🔄</span>
+              <span>Retake All Photos</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <!-- Camera Feed Viewport (2 cols on Desktop) -->
+          <div class="lg:col-span-2 space-y-4">
+            <div
+              class="relative camera-box rounded-2xl overflow-hidden aspect-[4/3] flex items-center justify-center bg-paper">
+              <video
+                id="webcam"
+                autoplay
+                playsinline
+                class="w-full h-full object-cover transform -scale-x-100 hidden"></video>
+              <canvas id="canvas" class="hidden"></canvas>
+
+              <!-- Countdown Overlay -->
+              <div
+                id="countdown"
+                class="absolute inset-0 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center text-8xl font-bold text-accent hidden transition-all duration-300">
+                3
+              </div>
+
+              <!-- Camera Permission Placeholder -->
+              <div
+                id="camera-placeholder"
+                class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-paper">
+                <svg
+                  class="w-16 h-16 text-accent mb-4 opacity-80 animate-pulse"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-ink mb-2">
+                  Camera Access Needed
+                </h3>
+                <p class="text-sm muted-text max-w-sm mb-6">
+                  Please enable your camera to begin taking photos for your
+                  custom strip.
+                </p>
+                <button
+                  id="btn-enable-camera"
+                  class="btn-primary text-white font-medium px-6 py-3 rounded-xl transition cursor-pointer">
+                  Enable Camera
+                </button>
+              </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div
+              class="card-bg p-4 rounded-2xl flex items-center justify-between">
+              <button
+                id="btn-take-photo"
+                disabled
+                class="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition cursor-pointer text-center font-bold text-base sm:text-lg">
+                📸 Take Photo
               </button>
             </div>
           </div>
-          <div class="camera-area section" id="previewSection">
-            <div class="preview-wrap" id="previewWrap">
-              <div class="preview-empty">
-                Your finished photo strip will appear here.
-              </div>
-              <canvas id="resultCanvas" class="hidden"></canvas>
-            </div>
-            <div class="action-row">
-              <button class="secondary" id="editAgain">← Edit</button
-              ><button class="primary" id="downloadBtn">↓ Download PNG</button>
-            </div>
-            <div class="status" id="downloadStatus"></div>
-          </div>
-        </section>
-        <aside class="side">
-          <section class="panel" id="layoutPanel">
-            <div class="panelhead">
-              <h2>01 · Pick your layout</h2>
-              <span>Choose one</span>
-            </div>
-            <div class="sidebody">
-              <div class="layout-options">
-                <button class="layout-option selected" data-layout="strip3">
-                  <span class="mini-layout strip3"><i></i><i></i><i></i></span
-                  ><b>3-photo strip</b><small>1 × 3 vertical</small>
-                </button>
-                <button class="layout-option" data-layout="grid4">
-                  <span class="mini-layout grid4"
-                    ><i></i><i></i><i></i><i></i></span
-                  ><b>4-photo grid</b><small>2 × 2</small>
-                </button>
-                <button class="layout-option" data-layout="strip4">
-                  <span class="mini-layout strip4"
-                    ><i></i><i></i><i></i><i></i></span
-                  ><b>4-photo strip</b><small>1 × 4 vertical</small>
-                </button>
-              </div>
-              <p class="empty-note">
-                Your layout decides how many photos you'll take.
-              </p>
-            </div>
-          </section>
-          <section class="panel">
-            <div class="panelhead">
-              <h2>02 · Your snapshots</h2>
-              <span id="photoCount">0 / 3 saved</span>
-            </div>
-            <div class="sidebody">
-              <div class="thumbs" id="thumbs"></div>
-              <p class="empty-note" id="thumbNote">
-                Your photos will show up here. Tap a photo's retake button to
-                replace just that shot.
-              </p>
-              <button class="secondary retake-all" id="retakeAll">
-                ↺ Retake all photos
-              </button>
-            </div>
-          </section>
-          <section class="panel">
-            <div class="panelhead">
-              <h2>03 · Frame & finish</h2>
-              <span>Make it yours</span>
-            </div>
-            <div class="sidebody">
-              <div class="custom-row">
-                <label class="label">Frame color</label>
-                <div class="swatches" id="sideSwatches"></div>
-              </div>
-              <div class="custom-row">
-                <label class="label" for="sideCaption">Bottom text</label
-                ><input
-                  class="text-input"
-                  id="sideCaption"
-                  maxlength="42"
-                  placeholder="Add a little note..." />
-              </div>
-              <label class="checkline"
-                ><input type="checkbox" id="sideDate" checked /> Include date
-                stamp</label
+
+          <!-- Photo Holders Column matching the exact reference UI -->
+          <div class="card-bg p-5 rounded-3xl space-y-4">
+            <div class="flex items-center justify-between">
+              <span
+                class="text-xs font-bold uppercase tracking-wider muted-text"
+                >Photo Slots</span
               >
-              <p class="empty-note">
-                Customize your strip after taking your photos.
+              <!-- Progress Donut / Circle Counter -->
+              <div
+                class="w-11 h-11 rounded-full border-4 border-line/60 flex items-center justify-center text-xs font-semibold text-muted bg-paper shadow-xs"
+                id="progress-circle">
+                0/3
+              </div>
+            </div>
+
+            <div id="holders-list" class="space-y-3.5">
+              <!-- Dynamic Holders generated matching reference -->
+            </div>
+
+            <div
+              class="flex items-center space-x-2 text-xs text-muted font-medium pt-1">
+              <span>✨</span>
+              <span>Tap any photo to retake it.</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex justify-between items-center pt-4 border-t line-border">
+          <button
+            id="btn-back-to-layout"
+            class="btn-secondary font-medium px-6 py-2.5 rounded-xl cursor-pointer">
+            &larr; Back
+          </button>
+          <button
+            id="btn-to-design"
+            disabled
+            class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium px-8 py-2.5 rounded-xl transition cursor-pointer">
+            Proceed to Design &rarr;
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== SCREEN 4: STRIP DESIGN ==================== -->
+      <section
+        id="screen-design"
+        class="screen-view hidden space-y-6 max-w-5xl mx-auto w-full">
+        <div class="text-center md:text-left space-y-1">
+          <h2 class="text-3xl font-serif font-bold text-ink">Make It Yours</h2>
+          <p class="text-sm muted-text">
+            Customize your photo strip background, style, and note before
+            downloading.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Photo Strip Live Canvas Preview (Left 5 Cols) -->
+          <div
+            class="lg:col-span-5 flex flex-col items-center justify-center card-bg p-6 rounded-2xl">
+            <div
+              id="final-strip-container"
+              class="strip-classic p-4 rounded-lg shadow-2xl w-64 min-h-[460px] flex flex-col items-center space-y-3 relative transition-all duration-300">
+              <div
+                class="text-xs font-serif tracking-widest muted-text uppercase">
+                Keepsake
+              </div>
+              <div
+                id="final-strip-slots"
+                class="w-full flex flex-col space-y-2">
+                <!-- Populated dynamically -->
+              </div>
+              <div
+                id="final-note-preview"
+                class="text-xs text-center font-mono muted-text mt-auto pt-2 break-words w-full">
+                09 · 24 · FOREVER
+              </div>
+            </div>
+          </div>
+
+          <!-- Customization Controls Panel (Right 7 Cols) -->
+          <div class="lg:col-span-7 card-bg p-6 rounded-2xl space-y-6">
+            <!-- Strip Color / Swatches -->
+            <div class="space-y-3">
+              <label class="text-sm font-bold text-ink">Strip Color</label>
+              <div class="flex flex-wrap gap-3" id="swatches-container">
+                <button
+                  data-color="#fffdf9"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line active-swatch shadow-xs cursor-pointer"
+                  style="background-color: #fffdf9"></button>
+                <button
+                  data-color="#29251f"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line shadow-xs cursor-pointer"
+                  style="background-color: #29251f"></button>
+                <button
+                  data-color="#f8e6e1"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line shadow-xs cursor-pointer"
+                  style="background-color: #f8e6e1"></button>
+                <button
+                  data-color="#f5f0e9"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line shadow-xs cursor-pointer"
+                  style="background-color: #f5f0e9"></button>
+                <button
+                  data-color="#66836b"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line shadow-xs cursor-pointer"
+                  style="background-color: #66836b"></button>
+                <button
+                  data-color="#d77d72"
+                  class="swatch-btn w-8 h-8 rounded-full border border-line shadow-xs cursor-pointer"
+                  style="background-color: #d77d72"></button>
+              </div>
+            </div>
+
+            <!-- Border Style -->
+            <div class="space-y-3">
+              <label class="text-sm font-bold text-ink">Border Style</label>
+              <div class="grid grid-cols-3 gap-3">
+                <button
+                  data-style="classic"
+                  class="style-btn btn-secondary text-xs py-2.5 px-3 rounded-xl border border-line text-center font-medium cursor-pointer active-style">
+                  Clean Minimal
+                </button>
+                <button
+                  data-style="vintage"
+                  class="style-btn btn-secondary text-xs py-2.5 px-3 rounded-xl border border-line text-center font-medium cursor-pointer">
+                  Vintage Film
+                </button>
+                <button
+                  data-style="playful"
+                  class="style-btn btn-secondary text-xs py-2.5 px-3 rounded-xl border border-line text-center font-medium cursor-pointer">
+                  Playful Soft
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Note Input -->
+            <div class="space-y-2">
+              <label for="custom-note-input" class="text-sm font-bold text-ink"
+                >Custom Note</label
+              >
+              <input
+                id="custom-note-input"
+                type="text"
+                maxlength="40"
+                placeholder="Add a short memory or date..."
+                class="w-full input-select px-4 py-2.5 rounded-xl text-sm focus:outline-none"
+                value="09 · 24 · FOREVER" />
+              <p class="text-[11px] muted-text">
+                Max 40 characters. Updates live on the photostrip.
               </p>
             </div>
-          </section>
-        </aside>
-      </div>
-      <div class="footer-note">SNAP STUDIO · MADE FOR YOUR FAVORITE PEOPLE</div>
+
+            <!-- Download Buttons -->
+            <div class="space-y-3 pt-4 border-t line-border">
+              <div class="grid grid-cols-2 gap-4">
+                <button
+                  id="btn-download-png"
+                  class="btn-primary text-white font-medium py-3 rounded-xl transition cursor-pointer text-center">
+                  ⬇ Download PNG
+                </button>
+                <button
+                  id="btn-download-jpg"
+                  class="btn-secondary font-medium py-3 rounded-xl transition cursor-pointer text-center">
+                  ⬇ Download JPG
+                </button>
+              </div>
+              <p
+                id="download-success-msg"
+                class="hidden text-xs text-center font-semibold text-green-700 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                ✨ Photostrip downloaded successfully! Returning to home...
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex justify-between items-center pt-4 border-t line-border">
+          <button
+            id="btn-back-to-camera"
+            class="btn-secondary font-medium px-6 py-2.5 rounded-xl cursor-pointer">
+            &larr; Back to Camera
+          </button>
+        </div>
+      </section>
     </main>
+
+    <!-- Footer -->
+    <footer
+      class="text-center py-6 text-xs muted-text border-t line-border mt-auto">
+      Made for good times · Keepsake Virtual Photobooth
+    </footer>
+
     <script src="script.js"></script>
   </body>
 </html>
