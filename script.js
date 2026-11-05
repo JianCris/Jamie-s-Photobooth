@@ -90,13 +90,24 @@ let mediaStream = null;
 
 btnEnableCamera.addEventListener('click', async () => {
     try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false });
+        // Mobile-friendly constraints that adapt to phone cameras natively
+        const constraints = {
+            video: {
+                facingMode: 'user',
+                width: { ideal: 1080 },
+                height: { ideal: 1920 }
+            },
+            audio: false
+        };
+
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
         webcam.srcObject = mediaStream;
         webcam.classList.remove('hidden');
         cameraPlaceholder.classList.add('hidden');
         btnTakePhoto.disabled = false;
     } catch (err) {
         alert('Could not access camera. Please allow camera permissions.');
+        console.error(err);
     }
 });
 
